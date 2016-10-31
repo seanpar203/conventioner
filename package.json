@@ -1,0 +1,28 @@
+{
+  "name": "conventioner",
+  "version": "1.0.0",
+  "description": "Converts objects to proper language naming conventions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/test.js -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seanpar203/conventioner.git"
+  },
+  "keywords": [
+    "conventions",
+    "underscore",
+    "camelcase"
+  ],
+  "author": "Sean Parsons <me@seanpp.me> (http://seanpp.me)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seanpar203/conventioner/issues"
+  },
+  "homepage": "https://github.com/seanpar203/conventioner#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2"
+  }
+}
