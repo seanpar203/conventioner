@@ -51,7 +51,8 @@ conventioner(blog);
 
 # More Complex Examples
 This example shows interacting with a server that uses underscore conventions
-and allows you to focus on building while following proper naming conventions.
+and allows you to focus on building while following proper naming conventions
+on both the server and the front end of the application.
 
 ```js
 state: {
