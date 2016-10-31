@@ -2,24 +2,12 @@
 /**
  * A Helper function for converting data from and to language conventions with ease.
  *
- * Example:
- *
- * let data = { someProp: 'Awesome', anotherProp: 'cool'};
- *
- * $http.post('some-url', conventioner(data))
- *      .then(res => setUpdate(conventioner(res.data)))
- *
- * // Sent object looks like - {some_prop: 'Awesome', another_prop: 'cool'}
- *
- * This non trivial example shows how easy it is to keep language conventions consistent.
- *
  * @param data - Single level Object
  * @returns {} - Single level Object to language convention.
  */
 const conventioner = data => {
-	/**
-	 * Default Variables.
-	 */
+
+	/** Default Variables. */
 	let output = {};
 	let convention = 'neutral';
 	const dataLength = Object.keys(data).length;
@@ -38,8 +26,7 @@ const conventioner = data => {
 
 
 	/**
-	 * Takes underscored prop name and converts it to
-	 * camelCased prop name.
+	 * Takes underscored prop name and converts it to camelCased prop name.
 	 *
 	 * @param str - value of key prop name.
 	 * @returns {string} - camelCased prop name.
@@ -62,8 +49,7 @@ const conventioner = data => {
 	};
 
 	/**
-	 * Takes camelCase prop name and converts it to underscore
-	 * prop name.
+	 * Takes camelCase prop name and converts it to underscore prop name.
 	 *
 	 * @param str - value of key prop name.
 	 * @returns {*} - underscore prop name.
@@ -97,10 +83,7 @@ const conventioner = data => {
 		}
 	};
 
-	/**
-	 * Loop to determine what convention is being used
-	 * from the data passed in.
-	 */
+	/** Loop to determine what convention is being used from the data passed in. */
 	for (let i = 0; i < dataLength; i += 1) {
 		const key = Object.keys(data)[i];
 
