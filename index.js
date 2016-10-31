@@ -116,19 +116,20 @@ const conventioner = data => {
 		}
 	}
 
-	/** underscore to camelCase. */
-	if (convention === 'underscore') {
-		conventionize(hasUnderscore, underToCamel);
-	}
+	/** Format data based on convention */
+	switch (convention !== null) {
 
-	/** camelCase to underscore. */
-	if (convention === 'camelCase') {
-		conventionize(hasUpperCase, camelToUnder);
-	}
+		case convention === 'underscore':
+			conventionize(hasUnderscore, underToCamel);
+			break;
 
-	/** Default, if no convention matches found. */
-	if (convention === 'neutral') {
-		output = data;
+		case convention === 'camelCase':
+			conventionize(hasUpperCase, camelToUnder);
+			break;
+
+		case convention === 'neutral':
+			output = data;
+			break;
 	}
 
 	return output;
