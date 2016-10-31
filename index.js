@@ -30,6 +30,12 @@ const conventioner = data => {
 	 */
 	const hasUpperCase = str => (/[A-Z]/.test(str));
 
+	/**
+	 * Return true if string has at least one underscore.
+	 * @param str
+	 */
+	const hasUnderscore = str => str.includes('_');
+
 
 	/**
 	 * Takes underscored prop name and converts it to
@@ -73,6 +79,25 @@ const conventioner = data => {
 	};
 
 	/**
+	 * Generic method that converts object prop names,
+	 *
+	 * @param test - test case to check if matches convention.
+	 * @param converter - method to convert prop name to desired.
+	 */
+	const conventionize = (test, converter) => {
+		for (let i = 0; i < dataLength; i += 1) {
+			let key = Object.keys(data)[i];
+			const val = data[key];
+
+			if (test(key)) {
+				key = converter(key);
+			}
+
+			output[key] = val;
+		}
+	};
+
+	/**
 	 * Loop to determine what convention is being used
 	 * from the data passed in.
 	 */
@@ -91,41 +116,17 @@ const conventioner = data => {
 		}
 	}
 
-	/**
-	 * underscore to camelCase.
-	 */
+	/** underscore to camelCase. */
 	if (convention === 'underscore') {
-		for (let i = 0; i < dataLength; i += 1) {
-			let key = Object.keys(data)[i];
-			const val = data[key];
-
-			if (key.includes('_')) {
-				key = underToCamel(key);
-			}
-
-			output[key] = val;
-		}
+		conventionize(hasUnderscore, underToCamel);
 	}
 
-	/**
-	 * camelCase to underscore.
-	 */
+	/** camelCase to underscore. */
 	if (convention === 'camelCase') {
-		for (let i = 0; i < dataLength; i += 1) {
-			let key = Object.keys(data)[i];
-			const val = data[key];
-
-			if (hasUpperCase(key)) {
-				key = camelToUnder(key);
-			}
-
-			output[key] = val;
-		}
+		conventionize(hasUpperCase, camelToUnder);
 	}
 
-	/**
-	 * Default, if no convention matches found.
-	 */
+	/** Default, if no convention matches found. */
 	if (convention === 'neutral') {
 		output = data;
 	}
