@@ -55,6 +55,8 @@ and allows you to focus on building while following proper naming conventions
 on both the server and the front end of the application.
 
 ```js
+import conventioner from 'conventioner';
+
 state: {
      user: {
         user_id:       1,
