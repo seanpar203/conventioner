@@ -79,7 +79,7 @@ const conventioner = data => {
 	};
 
 	/**
-	 * Generic method that converts object prop names,
+	 * Generic method that converts object prop names.
 	 *
 	 * @param test - test case to check if matches convention.
 	 * @param converter - method to convert prop name to desired.
