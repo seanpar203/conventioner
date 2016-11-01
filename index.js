@@ -40,6 +40,7 @@ const fromConvention = (data) => {
 function toConvention(from) {
 	let [convention, data] = from;
 	let output = {};
+
 	/** Format data based on convention */
 	switch (convention !== null) {
 
@@ -65,6 +66,7 @@ function toConvention(from) {
  * @param data - object to change conventions.
  * @param test - test case to check if matches convention.
  * @param converter - method to convert prop name to desired.
+ * @return {Object} - Value of converted conventions.
  */
 const conventionize = (data, test, converter) => {
 	let output = {};
@@ -122,6 +124,7 @@ const underToCamel = str => str.split('_').map(camelMap).join('');
  *
  * @param val - string prop name.
  * @param indx - iteration number.
+ * @return {String} - value of camelCased prop name.
  */
 const camelMap = (val, indx) => indx > 0 ? val.replace(/(^|\s)[a-z]/g, char => char.toUpperCase()) : val;
 
@@ -129,7 +132,7 @@ const camelMap = (val, indx) => indx > 0 ? val.replace(/(^|\s)[a-z]/g, char => c
  * Takes camelCase prop name and converts it to underscore prop name.
  *
  * @param str - value of key prop name.
- * @returns {*} - underscore prop name.
+ * @returns {String} - underscore prop name.
  *
  * Resource:
  *  http://stackoverflow.com/questions/30521224/javascript-convert-pascalcase-to-underscore-case
