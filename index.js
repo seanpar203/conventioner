@@ -20,11 +20,11 @@ const fromConvention = (data) => {
 		const key = Object.keys(data)[i];
 
 		switch (key !== null) {
-			case key.includes('_'):
+			case tests.hasUnderscore(key):
 				convention = 'us';
 				break;
 
-			case hasUpperCase(key):
+			case tests.hasUpperCase(key):
 				convention = 'cC';
 				break;
 
@@ -50,14 +50,12 @@ function toConvention(from, to = null) {
 	switch (convention !== null) {
 
 		case convention === 'us' && to === null:
-			output = conventionize(data, hasUnderscore, underToCamel);
+			output = conventionize(data, tests.hasUnderscore, underToCamel);
 			break;
 
 		case convention === 'cC' && to === null:
-			output = conventionize(data, hasUpperCase, camelToUnder);
+			output = conventionize(data, tests.hasUpperCase, camelToUnder);
 			break;
-
-		case convention === 'cC' && to === 'PC':
 
 		case convention === 'neutral':
 			output = data;
@@ -137,24 +135,12 @@ const hasLowerCases = arr => {
  * ============================================================================
  */
 
-/**
- * Returns true if string has upper case characters.
- * @param str
- */
-const hasUpperCase = str => (/[A-Z]/.test(str));
+const tests = {
+	hasUpperCase:       str => (/[A-Z]/.test(str)),
+	hasUnderscore:      str => str.includes('_'),
+	hasFirstCharsLower: str => hasLowerCases(upperCharsSplit(str)),
+};
 
-/**
- * Return true if string has at least one underscore.
- * @param str
- */
-const hasUnderscore = str => str.includes('_');
-
-
-/**
- * Returns true if string has lower cases after Upper characters split.
- * @param str
- */
-const hasFirstCharsLower = str => hasLowerCases(upperCharsSplit(str));
 
 /**
  *  Convention Converter methods.
