@@ -49,13 +49,15 @@ function toConvention(from, to = null) {
 
 	switch (convention !== null) {
 
-		case convention === 'us':
+		case convention === 'us' && to === null:
 			output = conventionize(data, hasUnderscore, underToCamel);
 			break;
 
-		case convention === 'cC':
+		case convention === 'cC' && to === null:
 			output = conventionize(data, hasUpperCase, camelToUnder);
 			break;
+
+		case convention === 'cC' && to === 'PC':
 
 		case convention === 'neutral':
 			output = data;
@@ -100,6 +102,35 @@ const conventionize = (data, test, converter) => {
  */
 const firstCharUpper = str => str.charAt(0).toUpperCase() + str.slice(1);
 
+/**
+ * Returns array of strings split at each upper case character.
+ *
+ * @param str
+ */
+const upperCharsSplit = str => str.split(/(?=[A-Z])/);
+
+
+/**
+ *
+ * @param arr - Array of strings.
+ * @return {boolean} - value if found any first characters lower case.
+ */
+const hasLowerCases = arr => {
+	let found = false;
+
+	if (arr.length > 1) {
+
+		for (let i = 0; i < arr.length; i += 1) {
+			let str = arr[i];
+			if (str[0] === str[0].toLowerCase()) {
+				found = true;
+				break;
+			}
+		}
+
+	}
+	return found;
+};
 
 /**
  *  Convention Tests.
@@ -117,6 +148,13 @@ const hasUpperCase = str => (/[A-Z]/.test(str));
  * @param str
  */
 const hasUnderscore = str => str.includes('_');
+
+
+/**
+ * Returns true if string has lower cases after Upper characters split.
+ * @param str
+ */
+const hasFirstCharsLower = str => hasLowerCases(upperCharsSplit(str));
 
 /**
  *  Convention Converter methods.
@@ -188,7 +226,7 @@ const camelToUnder = str => {
  * Credit:
  *  Teneff
  */
-const camelToPascal = str => str.split(/(?=[A-Z])/).map(camelToPascalMap).join('');
+const camelToPascal = str => upperCharsSplit(str).map(camelToPascalMap).join('');
 
 /**
  * Returns first character of each string in uppercase.
