@@ -7,7 +7,7 @@
  * @param to - Optional value to force specific convention.
  * @returns {Object} - Single level Object to language convention.
  */
-const conventioner = (data, to) => toConvention(fromConvention(data), to);
+const conventioner = (data, to = null) => toConvention(fromConvention(data), to);
 
 /**
  * Finds convention by analyzing data props.
@@ -39,7 +39,7 @@ const fromConvention = (data) => {
  * @param to - Optional value to force certain convention.
  * @returns {Object} - Value of to convention.
  */
-function toConvention(from, to = null) {
+function toConvention(from, to) {
 	let [convention, data] = from;
 	let output = {};
 
