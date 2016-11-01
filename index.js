@@ -101,44 +101,47 @@ const utility = {
 	/**
 	 * Returns camel case prop name
 	 *
-	 * @param val - string prop name.
-	 * @param i - iteration number.
-	 * @return {String} - value of camelCased prop name.
+	 * @param val - {String}
+	 * @param i - {Number}
+	 * @return {String} - string with camelCase convention.
 	 */
 	camelMap: (val, i) => i > 0 ? val.replace(/(^|\s)[a-z]/g, utility.firstCharUpper) : val.toLowerCase(),
 
 	/**
 	 * Returns first character of each string in uppercase.
-	 * @param str
+	 *
+	 * @param str - {String}
+	 * @return {String} - String with first character capitalized.
 	 */
-	pascalMap: str => str[0] === str[0].toUpperCase() ? str : utility.firstCharUpper(str),
+	pascalMap: str => tests.isFirstCharUpper(str) ? str : utility.firstCharUpper(str),
 
 	/**
 	 * Returns the string with the first character uppercase.
-	 * @param str
-	 * @return {String} - Value of string with first character uppercase.
+	 * @param str - {String}
+	 * @return {String} - string with first character uppercase.
 	 */
 	firstCharLower: str => str.charAt(0).toLowerCase() + str.slice(1),
 
 	/**
 	 * Returns the string with the first character uppercase.
-	 * @param str
-	 * @return {String} - Value of string with first character uppercase.
+	 * @param str - {String}
+	 * @return {String} - string with first character uppercase.
 	 */
 	firstCharUpper: str => str.charAt(0).toUpperCase() + str.slice(1),
 
 	/**
 	 * Returns array of strings split at each upper case character.
 	 *
-	 * @param str - String
+	 * @param str - {String}
+	 * @return {Array} - comma separated strings.
 	 */
 	upperCharsSplit: str => str.split(/(?=[A-Z])/),
 
 
 	/**
 	 * Returns Array of strings split at each underscore.
-	 * @param str - String
-	 * @return {Array} - Array of string split by underscore.
+	 * @param str - {String}
+	 * @return {Array} - comma separated strings
 	 */
 	underscoreSplit: str => str.split('_'),
 };
@@ -156,10 +159,17 @@ const tests = {
 
 	/**
 	 * Checks If first character is lowercase.
-	 * @param str
+	 * @param str - {String}
 	 * @return {Boolean} - Value of test.
 	 */
 	isFirstCharLower: str => str[0] === str[0].toLowerCase(),
+
+	/**
+	 * Checks If first character is uppercase.
+	 * @param str - {String}
+	 * @return {Boolean} - Value of test.
+	 */
+	isFirstCharUpper: str => str[0] === str[0].toUpperCase(),
 
 	/**
 	 *
@@ -170,14 +180,14 @@ const tests = {
 
 	/**
 	 * Checks if str has uppercase characters
-	 * @param str - String
+	 * @param str - {String}
 	 * @return {Boolean} - Value of test.
 	 */
 	hasUpperCase: str => (/[A-Z]/.test(str)),
 
 	/**
 	 * Checks if string has at least one underscore.
-	 * @param str - String
+	 * @param str - {String}
 	 * @return {Boolean} - Value of test
 	 */
 	hasUnderscore: str => str.includes('_'),
@@ -186,7 +196,7 @@ const tests = {
 	 * Checks if string contains an lowercase characters after split
 	 * on uppercase characters.
 	 *
-	 * @param str - String
+	 * @param str - {String}
 	 * @return {Boolean} - Value of test.
 	 */
 	hasFirstCharsLower: str => this.hasLowerCases(utility.upperCharsSplit(str)),
@@ -207,7 +217,7 @@ const converter = {
 	/**
 	 * Takes underscored prop name and converts it to camelCased prop name.
 	 *
-	 * @param str - value of key prop name.
+	 * @param str - {String}
 	 * @returns {string} - camelCased prop name.
 	 *
 	 * Resource:
@@ -221,7 +231,7 @@ const converter = {
 	/**
 	 * Takes camelCase prop name and converts it to underscore prop name.
 	 *
-	 * @param str - value of key prop name.
+	 * @param str - {String}
 	 * @returns {String} - underscore prop name.
 	 *
 	 * Resource:
@@ -234,7 +244,7 @@ const converter = {
 
 	/**
 	 * Splits strings at upper case & returns PascalCase string.
-	 * @param str
+	 * @param str - {String}
 	 * @return {String} - PascalCase string.
 	 *
 	 * Resource:
