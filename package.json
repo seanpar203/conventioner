@@ -4,7 +4,7 @@
   "description": "Converts objects to proper language naming conventions.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/test.js -w"
+    "test": "mocha --compilers js:babel-core/register test/test.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,9 @@
   },
   "homepage": "https://github.com/seanpar203/conventioner#readme",
   "devDependencies": {
+    "babel-core": "^6.18.0",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-es2015": "^6.18.0",
     "chai": "^3.5.0",
     "mocha": "^3.1.2"
   }

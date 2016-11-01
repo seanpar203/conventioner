@@ -2,6 +2,7 @@
  * Created by sean on 31/10/2016.
  */
 'use strict';
+import 'babel-polyfill';
 
 // Testing Deps.
 const chai = require('chai');
