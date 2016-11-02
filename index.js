@@ -4,9 +4,10 @@
  * A Helper function for converting data from and to language conventions with ease.
  *
  * @param data - Single level Object
+ * @param to - Optional value to force specific convention.
  * @returns {Object} - Single level Object to language convention.
  */
-const conventioner = data => toConvention(fromConvention(data));
+const conventioner = (data, to = null) => toConvention(fromConvention(data), to);
 
 /**
  * Finds convention by analyzing data props.
@@ -19,12 +20,12 @@ const fromConvention = (data) => {
 		const key = Object.keys(data)[i];
 
 		switch (key !== null) {
-			case key.includes('_'):
-				convention = 'underscore';
+			case tests.hasUnderscore(key):
+				convention = 'us';
 				break;
 
-			case hasUpperCase(key):
-				convention = 'camelCase';
+			case tests.hasUpperCase(key):
+				convention = 'cC';
 				break;
 
 		}
@@ -35,21 +36,25 @@ const fromConvention = (data) => {
 /**
  *
  * @param from - Array of results from convention.
+ * @param to - Optional value to force certain convention.
  * @returns {Object} - Value of to convention.
  */
-function toConvention(from) {
+function toConvention(from, to) {
 	let [convention, data] = from;
 	let output = {};
 
-	/** Format data based on convention */
+	if (to !== null) {
+		convention = to;
+	}
+
 	switch (convention !== null) {
 
-		case convention === 'underscore':
-			output = conventionize(data, hasUnderscore, underToCamel);
+		case convention === 'us' && to === null:
+			output = conventionize(data, tests.hasUnderscore, converter.underToCamel);
 			break;
 
-		case convention === 'camelCase':
-			output = conventionize(data, hasUpperCase, camelToUnder);
+		case convention === 'cC' && to === null:
+			output = conventionize(data, tests.hasUpperCase, converter.camelToUnder);
 			break;
 
 		case convention === 'neutral':
@@ -84,64 +89,172 @@ const conventionize = (data, test, converter) => {
 };
 
 /**
- *  Convention Tests.
- * ============================================================================
+ * Utility Methods.
+ * =================================================
+ *
+ * Notes:
+ *  Utility methods must return anything but a Boolean.
+ *
  */
 
-/**
- * Returns true if string has upper case characters.
- * @param str
- */
-const hasUpperCase = str => (/[A-Z]/.test(str));
+const utility = {
+	/**
+	 * Returns camel case prop name
+	 *
+	 * @param val - {String}
+	 * @param i - {Number}
+	 * @return {String} - string with camelCase convention.
+	 */
+	camelMap: (val, i) => i > 0 ? val.replace(/(^|\s)[a-z]/g, utility.firstCharUpper) : val.toLowerCase(),
+
+	/**
+	 * Returns first character of each string in uppercase.
+	 *
+	 * @param str - {String}
+	 * @return {String} - String with first character capitalized.
+	 */
+	pascalMap: str => tests.isFirstCharUpper(str) ? str : utility.firstCharUpper(str),
+
+	/**
+	 * Returns the string with the first character uppercase.
+	 * @param str - {String}
+	 * @return {String} - string with first character uppercase.
+	 */
+	firstCharLower: str => str.charAt(0).toLowerCase() + str.slice(1),
+
+	/**
+	 * Returns the string with the first character uppercase.
+	 * @param str - {String}
+	 * @return {String} - string with first character uppercase.
+	 */
+	firstCharUpper: str => str.charAt(0).toUpperCase() + str.slice(1),
+
+	/**
+	 * Returns array of strings split at each upper case character.
+	 *
+	 * @param str - {String}
+	 * @return {Array} - comma separated strings.
+	 */
+	upperCharsSplit: str => str.split(/(?=[A-Z])/),
+
+
+	/**
+	 * Returns Array of strings split at each underscore.
+	 * @param str - {String}
+	 * @return {Array} - comma separated strings
+	 */
+	underscoreSplit: str => str.split('_'),
+};
+
 
 /**
- * Return true if string has at least one underscore.
- * @param str
+ *  Tests.
+ * =================================================
+ *
+ * Notes:
+ *  Tests methods must return a Boolean.
  */
-const hasUnderscore = str => str.includes('_');
+
+const tests = {
+
+	/**
+	 * Checks If first character is lowercase.
+	 * @param str - {String}
+	 * @return {Boolean} - Value of test.
+	 */
+	isFirstCharLower: str => str[0] === str[0].toLowerCase(),
+
+	/**
+	 * Checks If first character is uppercase.
+	 * @param str - {String}
+	 * @return {Boolean} - Value of test.
+	 */
+	isFirstCharUpper: str => str[0] === str[0].toUpperCase(),
+
+	/**
+	 *
+	 * @param arr - Array of strings.
+	 * @return {Boolean} - value if found any first characters lower case.
+	 */
+	hasLowerCases: arr => arr.filter(utility.isFirstCharLower).length > 1,
+
+	/**
+	 * Checks if str has uppercase characters
+	 * @param str - {String}
+	 * @return {Boolean} - Value of test.
+	 */
+	hasUpperCase: str => (/[A-Z]/.test(str)),
+
+	/**
+	 * Checks if string has at least one underscore.
+	 * @param str - {String}
+	 * @return {Boolean} - Value of test
+	 */
+	hasUnderscore: str => str.includes('_'),
+
+	/**
+	 * Checks if string contains an lowercase characters after split
+	 * on uppercase characters.
+	 *
+	 * @param str - {String}
+	 * @return {Boolean} - Value of test.
+	 */
+	hasFirstCharsLower: str => this.hasLowerCases(utility.upperCharsSplit(str)),
+
+};
 
 /**
  *  Convention Converter methods.
- * ============================================================================
+ * =================================================
+ *
+ * Notes:
+ *  Converter methods must manipulate passed parameter.
  */
 
-/**
- * Takes underscored prop name and converts it to camelCased prop name.
- *
- * @param str - value of key prop name.
- * @returns {string} - camelCased prop name.
- *
- * Resource:
- *   https://www.sitepoint.com/community/t/capitalizing-first-letter-of-each-word-in-string/209644/5
- *
- * Credit:
- *   felgall
- */
-const underToCamel = str => str.split('_').map(camelMap).join('');
 
-/**
- * Returns camel case prop name
- *
- * @param val - string prop name.
- * @param indx - iteration number.
- * @return {String} - value of camelCased prop name.
- */
-const camelMap = (val, indx) => indx > 0 ? val.replace(/(^|\s)[a-z]/g, char => char.toUpperCase()) : val;
+const converter = {
 
-/**
- * Takes camelCase prop name and converts it to underscore prop name.
- *
- * @param str - value of key prop name.
- * @returns {String} - underscore prop name.
- *
- * Resource:
- *  http://stackoverflow.com/questions/30521224/javascript-convert-pascalcase-to-underscore-case
- *
- * Credit:
- *  Avinash Raj
- */
-const camelToUnder = str => {
-	return str.replace(/\.?([A-Z])/g, (x, y) => "_" + y.toLowerCase()).replace(/^_/, "");
+	/**
+	 * Takes underscored prop name and converts it to camelCased prop name.
+	 *
+	 * @param str - {String}
+	 * @returns {string} - camelCased prop name.
+	 *
+	 * Resource:
+	 *   https://www.sitepoint.com/community/t/capitalizing-first-letter-of-each-word-in-string/209644/5
+	 *
+	 * Credit:
+	 *   felgall
+	 */
+	underToCamel: str => utility.underscoreSplit(str).map(utility.camelMap).join(''),
+
+	/**
+	 * Takes camelCase prop name and converts it to underscore prop name.
+	 *
+	 * @param str - {String}
+	 * @returns {String} - underscore prop name.
+	 *
+	 * Resource:
+	 *  http://stackoverflow.com/questions/30521224/javascript-convert-pascalcase-to-underscore-case
+	 *
+	 * Credit:
+	 *  Avinash Raj
+	 */
+	camelToUnder: str => str.replace(/\.?([A-Z])/g, (x, y) => "_" + y.toLowerCase()).replace(/^_/, ""),
+
+	/**
+	 * Splits strings at upper case & returns PascalCase string.
+	 * @param str - {String}
+	 * @return {String} - PascalCase string.
+	 *
+	 * Resource:
+	 *  http://stackoverflow.com/questions/7888238/javascript-split-string-on-uppercase-characters
+	 *
+	 * Credit:
+	 *  Teneff
+	 */
+	camelToPascal: str => utility.upperCharsSplit(str).map(utility.pascalMap).join(''),
 };
+
 
 module.exports = conventioner;
