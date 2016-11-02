@@ -16,6 +16,7 @@ const conventioner = (data, to = null) => toConvention(fromConvention(data), to)
  */
 const fromConvention = (data) => {
 	let convention = 'neutral';
+
 	for (let i = 0; i < Object.keys(data).length; i += 1) {
 		const key = Object.keys(data)[i];
 
@@ -25,10 +26,13 @@ const fromConvention = (data) => {
 				convention = '_';
 				break;
 
-			case tests.hasUpperCase(key):
+			case tests.isFirstCharLower(key) && tests.hasUpperCase(key):
 				convention = 'cC';
 				break;
 
+			case tests.isFirstCharUpper(key):
+				convention = 'PC';
+				break
 		}
 	}
 	return [convention, data];
@@ -43,7 +47,6 @@ const fromConvention = (data) => {
 function toConvention(from, to) {
 	let [convention, data] = from;
 	let output = {};
-	debugger;
 
 	switch (convention !== null) {
 
@@ -53,6 +56,10 @@ function toConvention(from, to) {
 
 		case convention === 'cC' && to === null:
 			output = conventionize(data, tests.hasUpperCase, converter.camelToUnder);
+			break;
+
+		case convention === 'PC' && to === null:
+			output = conventionize(data, tests.isFirstCharUpper, converter.pascalToCamel);
 			break;
 
 		case convention === 'cC' && to === 'PC':
@@ -246,6 +253,15 @@ const converter = {
 	 * @return {String} - PascalCase string.
 	 */
 	camelToPascal: str => utility.firstCharUpper(str),
+
+
+	/**
+	 * Returns the first character of the string lowercase.
+	 *
+	 * @param str - {String}
+	 * @return {String} - First character lowercase.
+	 */
+	pascalToCamel: str => utility.firstCharLower(str),
 };
 
 
