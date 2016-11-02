@@ -74,9 +74,8 @@ function toConvention(from, to) {
 			output = conventionize(data, tests.isFirstCharUpper, converter.pascalToUnder);
 			break;
 
-		case convention === 'neutral':
+		default:
 			output = data;
-			break;
 	}
 
 	return output;
