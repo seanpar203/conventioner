@@ -1,5 +1,10 @@
 'use strict';
 
+
+import _isArray from 'lodash/fp/isArray';
+import _isObject from 'lodash/fp/isObject';
+
+
 /**
  * A Helper function for converting data from and to language conventions with ease.
  *
@@ -15,29 +20,7 @@ const conventioner = (data, to = null) => toConvention(fromConvention(data), to)
  * @param data - object to find convention.
  * @returns {Array} - name of convention
  */
-const fromConvention = (data) => {
-	let convention = '';
-
-	for (let i = 0; i < Object.keys(data).length; i += 1) {
-		const key = Object.keys(data)[i];
-
-		switch (key !== null) {
-
-			case tests.hasUnderscore(key):
-				convention = '_';
-				break;
-
-			case tests.isFirstCharLower(key) && tests.hasUpperCase(key):
-				convention = 'cC';
-				break;
-
-			case tests.isFirstCharUpper(key):
-				convention = 'PC';
-				break
-		}
-	}
-	return [convention, data];
-};
+const fromConvention = (data) => [utility.findConvention(data), data];
 
 /**
  * Decides what convention to change to.
@@ -175,6 +158,61 @@ const utility = {
 	 * @return {Array} - comma separated strings
 	 */
 	underscoreSplit: str => str.split('_'),
+
+	/**
+	 * Recursively find the convention by looking through every object until it find one.
+	 *
+	 * @param data - {Array, Object}
+	 * @return {String} - Convention.
+	 */
+	findConvention(data) {
+		let convention = '';
+
+		function recursiveFind(data) {
+
+			if (convention.length > 0) {
+				return;
+			}
+
+			else if (_isArray(data)) {
+				for (let i = 0; i < data.length; ++i) {
+					recursiveFind(data[i])
+				}
+			}
+
+			else if (_isObject(data)) {
+				let dataLength = Object.keys(data).length;
+
+				for (let i = 0; i < dataLength; i += 1) {
+					let key = Object.keys(data)[i];
+					let val = data[key];
+
+					switch (key !== null) {
+
+						case tests.hasUnderscore(key):
+							convention = '_';
+							break;
+
+						case tests.isFirstCharLower(key) && tests.hasUpperCase(key):
+							convention = 'cC';
+							break;
+
+						case tests.isFirstCharUpper(key):
+							convention = 'PC';
+							break
+					}
+
+					if (_isObject(val) || _isArray(val)) {
+						recursiveFind(val);
+					}
+				}
+			}
+		}
+
+		recursiveFind(data);
+
+		return convention.length > 0 ? convention : null;
+	},
 };
 
 
