@@ -45,6 +45,35 @@ describe('conventioner tests', () => {
 		})
 	});
 
+	describe('underscore to PascalCase', () => {
+		it('should convert underscore to PascalCase', () => {
+			const input = {
+				blog_date:      'june 24, 1999',
+				blog_name:      'Some blog name',
+				blog_tags:      ['Test', '1', true, false],
+				blog_body:      'lorem ipsum would go here.',
+				blog_likes:     15,
+				blog_poster:    'Some user here',
+				blog_followers: ['Peter', 'John', 'Doe'],
+			};
+			const expected = {
+				BlogDate:      'june 24, 1999',
+				BlogName:      'Some blog name',
+				BlogTags:      ['Test', '1', true, false],
+				BlogBody:      'lorem ipsum would go here.',
+				BlogLikes:     15,
+				BlogPoster:    'Some user here',
+				BlogFollowers: ['Peter', 'John', 'Doe'],
+			};
+
+			const output = conventioner(input, 'PC');
+
+			/** Asserts */
+			expect(output).to.be.an('object');
+			assert.deepEqual(output, expected);
+		})
+	});
+
 	describe('camelCase to underscore', () => {
 		it('should convert prop names to underscore', () => {
 			const input = {
@@ -128,6 +157,35 @@ describe('conventioner tests', () => {
 			};
 
 			const output = conventioner(input);
+
+			/** Asserts */
+			expect(output).to.be.an('object');
+			assert.deepEqual(output, expected);
+		})
+	});
+
+	describe('PascalCase to underscores', () => {
+		it('should convert PascalCase to underscores', () => {
+			const input = {
+				BlogDate:      'june 24, 1999',
+				BlogName:      'Some blog name',
+				BlogTags:      ['Test', '1', true, false],
+				BlogBody:      'lorem ipsum would go here.',
+				BlogLikes:     15,
+				BlogPoster:    'Some user here',
+				BlogFollowers: ['Peter', 'John', 'Doe'],
+			};
+			const expected = {
+				blog_date:      'june 24, 1999',
+				blog_name:      'Some blog name',
+				blog_tags:      ['Test', '1', true, false],
+				blog_body:      'lorem ipsum would go here.',
+				blog_likes:     15,
+				blog_poster:    'Some user here',
+				blog_followers: ['Peter', 'John', 'Doe'],
+			};
+
+			const output = conventioner(input, '_');
 
 			/** Asserts */
 			expect(output).to.be.an('object');
