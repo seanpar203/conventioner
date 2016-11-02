@@ -20,8 +20,9 @@ const fromConvention = (data) => {
 		const key = Object.keys(data)[i];
 
 		switch (key !== null) {
+
 			case tests.hasUnderscore(key):
-				convention = 'us';
+				convention = '_';
 				break;
 
 			case tests.hasUpperCase(key):
@@ -42,6 +43,7 @@ const fromConvention = (data) => {
 function toConvention(from, to) {
 	let [convention, data] = from;
 	let output = {};
+	debugger;
 
 	switch (convention !== null) {
 
@@ -54,7 +56,8 @@ function toConvention(from, to) {
 			break;
 
 		case convention === 'cC' && to === 'PC':
-			output = conventionize(data, tests.hasFirstCharsLower, converter.camelToPascal);
+			output = conventionize(data, tests.isFirstCharLower, converter.camelToPascal);
+			break;
 
 		case convention === 'neutral':
 			output = data;
@@ -74,6 +77,7 @@ function toConvention(from, to) {
  */
 const conventionize = (data, test, converter) => {
 	let output = {};
+	debugger;
 	for (let i = 0; i < Object.keys(data).length; i += 1) {
 		let key = Object.keys(data)[i];
 		const val = data[key];
@@ -112,7 +116,7 @@ const utility = {
 	 * @param str - {String}
 	 * @return {String} - String with first character capitalized.
 	 */
-	pascalMap: str => tests.isFirstCharUpper(str) ? str : utility.firstCharUpper(str),
+	pascalMap: str => utility.firstCharUpper(str),
 
 	/**
 	 * Returns the string with the first character uppercase.
@@ -178,7 +182,7 @@ const tests = {
 	 * @param arr - Array of strings.
 	 * @return {Boolean} - value if found any first characters lower case.
 	 */
-	hasLowerCases: arr => arr.filter(tests.isFirstCharLower).length > 1,
+	hasLowerCases: arr => arr.filter(tests.isFirstCharLower).length !== 0,
 
 	/**
 	 * Checks if str has uppercase characters.
@@ -195,16 +199,6 @@ const tests = {
 	 * @return {Boolean} - Value of test
 	 */
 	hasUnderscore: str => str.includes('_'),
-
-	/**
-	 * Checks if string contains an lowercase characters after split.
-	 * on uppercase characters.
-	 *
-	 * @param str - {String}
-	 * @return {Boolean} - Value of test.
-	 */
-	hasFirstCharsLower: str => tests.hasLowerCases(utility.upperCharsSplit(str)),
-
 };
 
 /**
@@ -214,7 +208,6 @@ const tests = {
  * Notes:
  *  Converter methods must manipulate passed parameter.
  */
-
 
 const converter = {
 
@@ -251,14 +244,8 @@ const converter = {
 	 *
 	 * @param str - {String}
 	 * @return {String} - PascalCase string.
-	 *
-	 * Resource:
-	 *  http://stackoverflow.com/questions/7888238/javascript-split-string-on-uppercase-characters
-	 *
-	 * Credit:
-	 *  Teneff
 	 */
-	camelToPascal: str => utility.upperCharsSplit(str).map(utility.pascalMap).join(''),
+	camelToPascal: str => utility.firstCharUpper(str),
 };
 
 
