@@ -15,7 +15,7 @@ const conventioner = (data, to = null) => toConvention(fromConvention(data), to)
  * @returns {Array} - name of convention
  */
 const fromConvention = (data) => {
-	let convention = 'neutral';
+	let convention = '';
 
 	for (let i = 0; i < Object.keys(data).length; i += 1) {
 		const key = Object.keys(data)[i];
@@ -201,14 +201,6 @@ const tests = {
 	 * @return {Boolean} - Value of test.
 	 */
 	isFirstCharUpper: str => str[0] === str[0].toUpperCase(),
-
-	/**
-	 * Checks if any split strings first character is lowercase.
-	 *
-	 * @param arr - Array of strings.
-	 * @return {Boolean} - value if found any first characters lower case.
-	 */
-	hasLowerCases: arr => arr.filter(tests.isFirstCharLower).length !== 0,
 
 	/**
 	 * Checks if str has uppercase characters.
