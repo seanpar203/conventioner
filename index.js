@@ -66,6 +66,14 @@ function toConvention(from, to) {
 			output = conventionize(data, tests.isFirstCharLower, converter.camelToPascal);
 			break;
 
+		case convention === '_' && to === 'PC':
+			output = conventionize(data, tests.hasUnderscore, converter.underToPascal);
+			break;
+
+		case convention === 'PC' && to === '_':
+			output = conventionize(data, tests.isFirstCharUpper, converter.pascalToUnder);
+			break;
+
 		case convention === 'neutral':
 			output = data;
 			break;
@@ -84,7 +92,7 @@ function toConvention(from, to) {
  */
 const conventionize = (data, test, converter) => {
 	let output = {};
-	debugger;
+
 	for (let i = 0; i < Object.keys(data).length; i += 1) {
 		let key = Object.keys(data)[i];
 		const val = data[key];
@@ -124,6 +132,18 @@ const utility = {
 	 * @return {String} - String with first character capitalized.
 	 */
 	pascalMap: str => utility.firstCharUpper(str),
+
+
+	/**
+	 * Return underscore prop name.
+	 *
+	 * @param val - {String} - current iteration value.
+	 * @param i - {Number} - iteration
+	 * @param arr - {Array} - value of array passed in.
+	 */
+	underscoreMap: (val, i, arr) => i === arr.length - 1
+		? val.toLowerCase()
+		: val.toLowerCase() + '_',
 
 	/**
 	 * Returns the string with the first character uppercase.
@@ -232,8 +252,17 @@ const converter = {
 	 */
 	underToCamel: str => utility.underscoreSplit(str).map(utility.camelMap).join(''),
 
+
 	/**
-	 * Takes camelCase prop name and converts it to underscore prop name.
+	 * Returns PascalCase prop name.
+	 *
+	 * @param str - {String}
+	 * @return {String} - Pascal convention string.
+	 */
+	underToPascal: str => utility.underscoreSplit(str).map(utility.pascalMap).join(''),
+
+	/**
+	 * Returns underscore prop name.
 	 *
 	 * @param str - {String}
 	 * @returns {String} - underscore prop name.
@@ -247,21 +276,28 @@ const converter = {
 	camelToUnder: str => str.replace(/\.?([A-Z])/g, (x, y) => "_" + y.toLowerCase()).replace(/^_/, ""),
 
 	/**
-	 * Splits strings at upper case & returns PascalCase string.
+	 * Returns PascalCase prop name.
 	 *
 	 * @param str - {String}
 	 * @return {String} - PascalCase string.
 	 */
 	camelToPascal: str => utility.firstCharUpper(str),
 
-
 	/**
-	 * Returns the first character of the string lowercase.
+	 * Returns camelCase prop name.
 	 *
 	 * @param str - {String}
 	 * @return {String} - First character lowercase.
 	 */
 	pascalToCamel: str => utility.firstCharLower(str),
+
+	/**
+	 * Returns underscore prop name.
+	 *
+	 * @param str - {String}
+	 * @return {String} - underscore string.
+	 */
+	pascalToUnder: str => utility.upperCharsSplit(str).map(utility.underscoreMap).join(''),
 };
 
 
