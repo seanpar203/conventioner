@@ -11,9 +11,9 @@ or for yarn users:
 
 
 # Usage
-There is only one way to use the library which is passing in an object
-to the function `conventioner` which returns a formatted object based on
-what convention was passed in.
+passing a **Single Level** object to the function `conventioner` will attempt to convert `underscore` and `PascalCase`
+to `camelCase` and `camelCase` to `underscore` by default. See [Selecting Conventions](#selecting-convention) to override
+the default behavior.
 
 
 # Non Trivial Usage
@@ -21,29 +21,17 @@ what convention was passed in.
 ``` js
 import conventioner from 'conventioner';
 
-const blog = {
-    blogDate:      'june 24, 1999',
-    blogName:      'Some blog name',
-    blogTags:      ['Test', '1', true, false],
-    blogBody:      'lorem ipsum would go here.',
-    blogLikes:     15,
-    blogPoster:    'Some user here',
-    blogFollowers: ['Peter', 'John', 'Doe'],
+const data = {
+    blogLikes: 15,
+    blogName:  'Some blog name',
 };
-
 
 conventioner(blog);
 
-
-/** Return underscore convention. */
+// Output
 {
-    blog_date:      'june 24, 1999',
     blog_name:      'Some blog name',
-    blog_tags:      ['Test', '1', true, false],
-    blog_body:      'lorem ipsum would go here.',
     blog_likes:     15,
-    blog_poster:    'Some user here',
-    blog_followers: ['Peter', 'John', 'Doe'],
 };
 
 ```
@@ -76,3 +64,66 @@ function updateUser() {
 }
 ```
 
+# Other Support Conventions
+Currently, `underscores`, `camelCase` and `PascalCase` is supported and transitioning
+between any of them is possible.
+
+
+# Selecting Convention
+
+The `to` parameter is optional but allows to override the default conventioner behavior:
+
+`conventioner(data[,to])`
+
+
+#### From PascalCase to underscores.
+
+```js
+import conventioner from 'conventioner';
+
+data = {prop_name: true};
+
+
+output = conventioner(data, '_');
+
+
+// output
+{
+    prop_name: true
+}
+
+```
+
+#### From underscores to PascalCase
+```js
+import conventioner from 'conventioner';
+
+data = {prop_name: true};
+
+
+output = conventioner(data, 'PC');
+
+
+// output
+{
+    PropName: true
+}
+
+```
+
+#### From camelCase to PascalCase
+```js
+import conventioner from 'conventioner';
+
+data = {propName: true};
+
+
+output = conventioner(data, 'PC');
+
+
+// output
+{
+    PropName: true
+}
+
+```
