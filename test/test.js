@@ -104,4 +104,34 @@ describe('conventioner tests', () => {
 			assert.deepEqual(output, expected);
 		})
 	});
+
+
+	describe('PascalCase to camelCase ', () => {
+		it('should convert PascalCase to camelCase ', () => {
+			const input = {
+				BlogDate:      'june 24, 1999',
+				BlogName:      'Some blog name',
+				BlogTags:      ['Test', '1', true, false],
+				BlogBody:      'lorem ipsum would go here.',
+				BlogLikes:     15,
+				BlogPoster:    'Some user here',
+				BlogFollowers: ['Peter', 'John', 'Doe'],
+			};
+			const expected = {
+				blogDate:      'june 24, 1999',
+				blogName:      'Some blog name',
+				blogTags:      ['Test', '1', true, false],
+				blogBody:      'lorem ipsum would go here.',
+				blogLikes:     15,
+				blogPoster:    'Some user here',
+				blogFollowers: ['Peter', 'John', 'Doe'],
+			};
+
+			const output = conventioner(input);
+
+			/** Asserts */
+			expect(output).to.be.an('object');
+			assert.deepEqual(output, expected);
+		})
+	});
 });
