@@ -81,7 +81,7 @@ The `to` parameter is optional but allows to override the default conventioner b
 ```js
 import conventioner from 'conventioner';
 
-data = {prop_name: true};
+data = {PropName: true};
 
 
 output = conventioner(data, '_');
