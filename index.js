@@ -43,19 +43,18 @@ function toConvention(from, to) {
 	let [convention, data] = from;
 	let output = {};
 
-	if (to !== null) {
-		convention = to;
-	}
-
 	switch (convention !== null) {
 
-		case convention === 'us' && to === null:
+		case convention === '_' && to === null:
 			output = conventionize(data, tests.hasUnderscore, converter.underToCamel);
 			break;
 
 		case convention === 'cC' && to === null:
 			output = conventionize(data, tests.hasUpperCase, converter.camelToUnder);
 			break;
+
+		case convention === 'cC' && to === 'PC':
+			output = conventionize(data, tests.hasFirstCharsLower, converter.camelToPascal);
 
 		case convention === 'neutral':
 			output = data;
@@ -159,6 +158,7 @@ const tests = {
 
 	/**
 	 * Checks If first character is lowercase.
+	 *
 	 * @param str - {String}
 	 * @return {Boolean} - Value of test.
 	 */
@@ -166,20 +166,23 @@ const tests = {
 
 	/**
 	 * Checks If first character is uppercase.
+	 *
 	 * @param str - {String}
 	 * @return {Boolean} - Value of test.
 	 */
 	isFirstCharUpper: str => str[0] === str[0].toUpperCase(),
 
 	/**
+	 * Checks if any split strings first character is lowercase.
 	 *
 	 * @param arr - Array of strings.
 	 * @return {Boolean} - value if found any first characters lower case.
 	 */
-	hasLowerCases: arr => arr.filter(utility.isFirstCharLower).length > 1,
+	hasLowerCases: arr => arr.filter(tests.isFirstCharLower).length > 1,
 
 	/**
-	 * Checks if str has uppercase characters
+	 * Checks if str has uppercase characters.
+	 *
 	 * @param str - {String}
 	 * @return {Boolean} - Value of test.
 	 */
@@ -187,19 +190,20 @@ const tests = {
 
 	/**
 	 * Checks if string has at least one underscore.
+	 *
 	 * @param str - {String}
 	 * @return {Boolean} - Value of test
 	 */
 	hasUnderscore: str => str.includes('_'),
 
 	/**
-	 * Checks if string contains an lowercase characters after split
+	 * Checks if string contains an lowercase characters after split.
 	 * on uppercase characters.
 	 *
 	 * @param str - {String}
 	 * @return {Boolean} - Value of test.
 	 */
-	hasFirstCharsLower: str => this.hasLowerCases(utility.upperCharsSplit(str)),
+	hasFirstCharsLower: str => tests.hasLowerCases(utility.upperCharsSplit(str)),
 
 };
 
@@ -244,6 +248,7 @@ const converter = {
 
 	/**
 	 * Splits strings at upper case & returns PascalCase string.
+	 *
 	 * @param str - {String}
 	 * @return {String} - PascalCase string.
 	 *
