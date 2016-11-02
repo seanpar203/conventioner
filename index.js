@@ -3,8 +3,8 @@
 /**
  * A Helper function for converting data from and to language conventions with ease.
  *
- * @param data - Single level Object
- * @param to - Optional value to force specific convention.
+ * @param data - {Object} - Single level Object
+ * @param to - {String} - Optional value to force specific convention.
  * @returns {Object} - Single level Object to language convention.
  */
 const conventioner = (data, to = null) => toConvention(fromConvention(data), to);
