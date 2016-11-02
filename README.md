@@ -22,36 +22,38 @@ the default behavior.
 import conventioner from 'conventioner';
 
 const data = {
-    blogLikes: 15,
-    blogName:  'Some blog name',
+    blog_name:  'Some blog name',
+    blog_likes: 15,
 };
 
 conventioner(blog);
 
-// Output
+// output
 {
-    blog_name:      'Some blog name',
-    blog_likes:     15,
+    blogName:  'Some blog name',
+    blogLikes: 15,
 };
 
 ```
 
 
 # More Complex Examples
-This example shows interacting with a server that uses underscore conventions
-and allows you to focus on building while following proper naming conventions
-on both the server and the front end of the application.
+
+This example shows a mock of communicating with a backend that uses underscore naming convention
+like `Python`(:heart_eyes:), `Ruby` and `PHP`(:poop:).
+
+This makes keeping language conventions consistent easy & allows you to focus on building your app.
 
 ```js
 import conventioner from 'conventioner';
 
 state: {
      user: {
-        user_id:       1,
-        user_name:     'Some user',
-        user_email:    'some@gmail.com',
-        user_birthday: 'may 3rd, 1991',
-        user_address:  '42 holley drive',
+        userId:       1,
+        userName:     'Some user',
+        userEmail:    'some@gmail.com',
+        userAddress:  '42 holley drive',
+        userBirthday: 'may 3rd, 1991',
     };
 }
 
