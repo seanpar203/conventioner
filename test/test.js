@@ -19,7 +19,7 @@ const conventioner = require('./../index');
 
 describe('conventioner tests', () => {
 
-	describe('underscore to camelCase', () => {
+	describe('underscores to camelCase', () => {
 		it('should convert prop names to camel case.', () => {
 			const input = {
 				user_id:       1,
@@ -45,7 +45,7 @@ describe('conventioner tests', () => {
 		})
 	});
 
-	describe('underscore to PascalCase', () => {
+	describe('underscores to PascalCase', () => {
 		it('should convert underscore to PascalCase', () => {
 			const input = {
 				blog_date:      'june 24, 1999',
@@ -74,7 +74,7 @@ describe('conventioner tests', () => {
 		})
 	});
 
-	describe('camelCase to underscore', () => {
+	describe('camelCase to underscores', () => {
 		it('should convert prop names to underscore', () => {
 			const input = {
 				blogDate:      'june 24, 1999',
