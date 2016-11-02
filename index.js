@@ -11,6 +11,7 @@ const conventioner = (data, to = null) => toConvention(fromConvention(data), to)
 
 /**
  * Finds convention by analyzing data props.
+ *
  * @param data - object to find convention.
  * @returns {Array} - name of convention
  */
@@ -39,9 +40,10 @@ const fromConvention = (data) => {
 };
 
 /**
+ * Decides what convention to change to.
  *
- * @param from - Array of results from convention.
- * @param to - Optional value to force certain convention.
+ * @param from - {Array} - results fromConvention method.
+ * @param to - {String} - Optional value to force certain convention.
  * @returns {Object} - Value of to convention.
  */
 function toConvention(from, to) {
@@ -84,9 +86,9 @@ function toConvention(from, to) {
 /**
  * Generic method that converts object prop names.
  *
- * @param data - object to change conventions.
- * @param test - test case to check if matches convention.
- * @param converter - method to convert prop name to desired.
+ * @param data - {Object} - data to change conventions.
+ * @param test - {Function} - test case to check if matches convention.
+ * @param converter - {Function} - method to convert prop name to desired.
  * @return {Object} - Value of converted conventions.
  */
 const conventionize = (data, test, converter) => {
@@ -116,7 +118,7 @@ const conventionize = (data, test, converter) => {
 
 const utility = {
 	/**
-	 * Returns camel case prop name
+	 * Returns camelCase prop name.
 	 *
 	 * @param val - {String}
 	 * @param i - {Number}
@@ -125,7 +127,7 @@ const utility = {
 	camelMap: (val, i) => i > 0 ? val.replace(/(^|\s)[a-z]/g, utility.firstCharUpper) : val.toLowerCase(),
 
 	/**
-	 * Returns first character of each string in uppercase.
+	 * Returns PascalCase prop name.
 	 *
 	 * @param str - {String}
 	 * @return {String} - String with first character capitalized.
