@@ -14,13 +14,6 @@ import _isObject from 'lodash/fp/isObject';
  */
 const conventioner = (data, to = null) => toConvention(fromConvention(data), to);
 
-/**
- * Finds convention by analyzing data props.
- *
- * @param data - object to find convention.
- * @returns {Array} - name of convention
- */
-const fromConvention = (data) => [utility.findConvention(data), data];
 
 /**
  * Decides what convention to change to.
@@ -67,6 +60,14 @@ function toConvention(from, to) {
 }
 
 /**
+ * Finds convention by analyzing data props.
+ *
+ * @param data - object to find convention.
+ * @returns {Array} - name of convention
+ */
+const fromConvention = (data) => [utility.findConvention(data), data];
+
+/**
  * Generic method that converts object prop names.
  *
  * @param data - {Object} - data to change conventions.
@@ -74,21 +75,7 @@ function toConvention(from, to) {
  * @param converter - {Function} - method to convert prop name to desired.
  * @return {Object} - Value of converted conventions.
  */
-const conventionize = (data, test, converter) => {
-	let output = {};
-
-	for (let i = 0; i < Object.keys(data).length; i += 1) {
-		let key = Object.keys(data)[i];
-		const val = data[key];
-
-		if (test(key)) {
-			key = converter(key);
-		}
-
-		output[key] = val;
-	}
-	return output;
-};
+const conventionize = (data, test, converter) => utility.convertProps(data, test, converter);
 
 /**
  * Utility Methods.
@@ -174,13 +161,13 @@ const utility = {
 				return;
 			}
 
-			else if (_isArray(data)) {
+			else if (_.isArray(data)) {
 				for (let i = 0; i < data.length; ++i) {
 					recursiveFind(data[i])
 				}
 			}
 
-			else if (_isObject(data)) {
+			else if (_.isObject(data)) {
 				let dataLength = Object.keys(data).length;
 
 				for (let i = 0; i < dataLength; i += 1) {
@@ -202,7 +189,7 @@ const utility = {
 							break
 					}
 
-					if (_isObject(val) || _isArray(val)) {
+					if (_.isObject(val) || _.isArray(val)) {
 						recursiveFind(val);
 					}
 				}
@@ -213,6 +200,50 @@ const utility = {
 
 		return convention.length > 0 ? convention : null;
 	},
+
+	/**
+	 * Recursive method to convert multi-level objects to convention.
+	 *
+	 * @param data - {Array, Object}
+	 * @param test - {Function}
+	 * @param converter - {Function}
+	 * @return {*}
+	 */
+	convertProps(data, test, converter) {
+
+		function recursiveConverter(data) {
+			debugger;
+
+			if (_.isArray(data)) {
+				for (let i = 0; i < data.length; ++i) {
+					recursiveConverter(data[i])
+				}
+			}
+
+			else if (_.isObject(data)) {
+				let dataLength = Object.keys(data).length;
+
+				for (let i = 0; i < dataLength; i += 1) {
+					let key = Object.keys(data)[i];
+					let val = data[key];
+
+					if (test(key)) {
+						let newKey = converter(key);
+						data[newKey] = val;
+						delete data[key];
+					}
+
+					if (_.isObject(val) || _.isArray(val)) {
+						recursiveConverter(val);
+					}
+				}
+			}
+		}
+
+		recursiveConverter(data);
+
+		return data;
+	}
 };
 
 
