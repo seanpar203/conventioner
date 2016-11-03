@@ -1,10 +1,6 @@
 'use strict';
 
 
-import _isArray from 'lodash/fp/isArray';
-import _isObject from 'lodash/fp/isObject';
-
-
 /**
  * A Helper function for converting data from and to language conventions with ease.
  *
@@ -24,7 +20,7 @@ const conventioner = (data, to = null) => toConvention(fromConvention(data), to)
  */
 function toConvention(from, to) {
 	let [convention, data] = from;
-	let output = {};
+	let output;
 
 	switch (convention !== null) {
 
@@ -211,36 +207,40 @@ const utility = {
 	 */
 	convertProps(data, test, converter) {
 
-		function recursiveConverter(data) {
-			debugger;
+		function recursiveConverter() {
 
 			if (_.isArray(data)) {
-				for (let i = 0; i < data.length; ++i) {
+				for (let i = 0; i < data.length; i += 1) {
 					recursiveConverter(data[i])
 				}
 			}
 
 			else if (_.isObject(data)) {
 				let dataLength = Object.keys(data).length;
+				let obj = {};
 
 				for (let i = 0; i < dataLength; i += 1) {
 					let key = Object.keys(data)[i];
 					let val = data[key];
 
 					if (test(key)) {
-						let newKey = converter(key);
-						data[newKey] = val;
-						delete data[key];
+						key = converter(key);
 					}
+
+					obj[key] = val;
 
 					if (_.isObject(val) || _.isArray(val)) {
 						recursiveConverter(val);
+					}
+
+					if (i === dataLength) {
+						data = obj;
 					}
 				}
 			}
 		}
 
-		recursiveConverter(data);
+		recursiveConverter();
 
 		return data;
 	}
