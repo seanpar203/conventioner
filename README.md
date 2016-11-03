@@ -42,7 +42,7 @@ conventioner(blog);
 This example shows a mock of communicating with a backend that uses underscore naming convention
 like `Python`(:heart_eyes:), `Ruby` and `PHP`(:poop:).
 
-This makes keeping language conventions consistent easy & allows you to focus on building your app.
+This makes keeping language naming conventions easy & allows you to focus on building your app.
 
 ```js
 import conventioner from 'conventioner';
