@@ -159,7 +159,7 @@ const utility = {
 		let convention = '';
 
 		/**
-		 * Search all property names until finding a convention.
+		 * Analyze all property names in attempts to find a language convention.
 		 *
 		 * @param data - {*}
 		 */
