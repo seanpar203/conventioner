@@ -1,6 +1,6 @@
 {
   "name": "conventioner",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Converts objects to proper language naming conventions.",
   "main": "index.js",
   "scripts": {
