@@ -1,7 +1,7 @@
 'use strict';
 
-import _isArray from 'lodash/fp/isArray';
-import _isObject from 'lodash/fp/isObject';
+const _isArray = require('lodash/fp/isArray');
+const _isObject = require('lodash/fp/isObject');
 
 /**
  * A Helper function for converting data from and to language conventions with ease.
