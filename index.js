@@ -1,7 +1,7 @@
 'use strict';
 
-import _.isArray from 'lodash/fp/isArray';
-import _.isObject from 'lodash/fp/isObject';
+import _isArray from 'lodash/fp/isArray';
+import _isObject from 'lodash/fp/isObject';
 
 /**
  * A Helper function for converting data from and to language conventions with ease.
@@ -159,13 +159,13 @@ const utility = {
 				return;
 			}
 
-			else if (_.isArray(data)) {
+			else if (_isArray(data)) {
 				for (let i = 0; i < data.length; ++i) {
 					recursiveFind(data[i])
 				}
 			}
 
-			else if (_.isObject(data)) {
+			else if (_isObject(data)) {
 				let dataLength = Object.keys(data).length;
 
 				for (let i = 0; i < dataLength; i += 1) {
@@ -187,7 +187,7 @@ const utility = {
 							break
 					}
 
-					if (_.isObject(val) || _.isArray(val)) {
+					if (_isObject(val) || _isArray(val)) {
 						recursiveFind(val);
 					}
 				}
@@ -211,13 +211,13 @@ const utility = {
 
 		function recursiveConverter(data) {
 
-			if (_.isArray(data)) {
+			if (_isArray(data)) {
 				for (let i = 0; i < data.length; i += 1) {
 					recursiveConverter(data[i])
 				}
 			}
 
-			else if (_.isObject(data)) {
+			else if (_isObject(data)) {
 				let dataLength = Object.keys(data).length;
 
 				for (let i = dataLength; i > 0; i -= 1) {
@@ -230,7 +230,7 @@ const utility = {
 						data[key] = val;
 					}
 
-					if (_.isObject(val) || _.isArray(val)) {
+					if (_isObject(val) || _isArray(val)) {
 						recursiveConverter(val);
 					}
 				}
