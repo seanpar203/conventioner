@@ -52,17 +52,7 @@ state: {
         userName:     'Some user',
         userEmail:    'some@gmail.com',
         userAddress:  '42 holley drive',
-        userBirthday: 'may 3rd, 1991',
-        friends:[
-            {
-                firstName: 'Some',
-                lastName:  'amigo,
-            },
-            {
-                firstName: 'Another',
-                lastName:  'amigo,
-            }
-        ]
+        userBirthday: 'may 3rd, 1991'
     };
 }
 
