@@ -19,8 +19,9 @@ const conventioner = require('./../index');
 
 describe('conventioner tests', () => {
 
-	describe('underscores to camelCase', () => {
-		it('should convert prop names to camel case.', () => {
+	describe('underscores', () => {
+
+		it('should convert underscores to camelCase', () => {
 			const input = {
 				user_id:       1,
 				user_name:     'Some user',
@@ -42,11 +43,9 @@ describe('conventioner tests', () => {
 			expect(output).to.be.an('object');
 			assert.deepEqual(output, expected);
 
-		})
-	});
+		});
 
-	describe('underscores to PascalCase', () => {
-		it('should convert underscore to PascalCase', () => {
+		it('should convert underscores to PascalCase', () => {
 			const input = {
 				blog_date:      'june 24, 1999',
 				blog_name:      'Some blog name',
@@ -71,11 +70,12 @@ describe('conventioner tests', () => {
 			/** Asserts */
 			expect(output).to.be.an('object');
 			assert.deepEqual(output, expected);
-		})
+		});
 	});
 
-	describe('camelCase to underscores', () => {
-		it('should convert prop names to underscore', () => {
+
+	describe('camelCase', () => {
+		it('should convert camelCase to underscores', () => {
 			const input = {
 				blogDate:      'june 24, 1999',
 				blogName:      'Some blog name',
@@ -101,10 +101,8 @@ describe('conventioner tests', () => {
 			/** Asserts */
 			expect(output).to.be.an('object');
 			assert.deepEqual(output, expected);
-		})
-	});
+		});
 
-	describe('camelCase to PascalCase', () => {
 		it('should convert camelCase to PascalCase', () => {
 			const input = {
 				blogDate:      'june 24, 1999',
@@ -131,11 +129,11 @@ describe('conventioner tests', () => {
 			/** Asserts */
 			expect(output).to.be.an('object');
 			assert.deepEqual(output, expected);
-		})
+		});
 	});
 
 
-	describe('PascalCase to camelCase ', () => {
+	describe('PascalCase', () => {
 		it('should convert PascalCase to camelCase ', () => {
 			const input = {
 				BlogDate:      'june 24, 1999',
@@ -161,10 +159,8 @@ describe('conventioner tests', () => {
 			/** Asserts */
 			expect(output).to.be.an('object');
 			assert.deepEqual(output, expected);
-		})
-	});
+		});
 
-	describe('PascalCase to underscores', () => {
 		it('should convert PascalCase to underscores', () => {
 			const input = {
 				BlogDate:      'june 24, 1999',
@@ -191,5 +187,101 @@ describe('conventioner tests', () => {
 			expect(output).to.be.an('object');
 			assert.deepEqual(output, expected);
 		})
+	});
+
+	describe('Converting Multi-level Objects', () => {
+		it('should convert all PascalCase property names to camelCase.', () => {
+			const input = {
+				BlogTags:      [
+					{
+						SomeTag: 'someTag'
+					},
+					{
+						AnotherTag: true
+					}
+				],
+				BlogPoster:    {
+					PosterName: 'Sean',
+					PosterAge:  25
+				},
+				BlogDate:      'june 24, 1999',
+				BlogName:      'Some blog name',
+				BlogBody:      'lorem ipsum would go here.',
+				BlogLikes:     15,
+				BlogFollowers: ['Peter', 'John', 'Doe'],
+			};
+			const expected = {
+				blogTags:      [
+					{
+						someTag: 'someTag'
+					},
+					{
+						anotherTag: true
+					}
+				],
+				blogPoster:    {
+					posterName: 'Sean',
+					posterAge:  25
+				},
+				blogDate:      'june 24, 1999',
+				blogName:      'Some blog name',
+				blogBody:      'lorem ipsum would go here.',
+				blogLikes:     15,
+				blogFollowers: ['Peter', 'John', 'Doe'],
+			};
+
+			const output = conventioner(input);
+
+			/** Asserts */
+			expect(output).to.be.an('object');
+			assert.deepEqual(output, expected);
+		});
+
+		it('should convert all camelCase property names to underscores.', () => {
+			const input = {
+				blogTags:      [
+					{
+						SomeTag: 'someTag'
+					},
+					{
+						AnotherTag: true
+					}
+				],
+				blogPoster:    {
+					posterName: 'Sean',
+					posterAge:  25
+				},
+				blogDate:      'june 24, 1999',
+				blogName:      'Some blog name',
+				blogBody:      'lorem ipsum would go here.',
+				blogLikes:     15,
+				blogFollowers: ['Peter', 'John', 'Doe'],
+			};
+			const expected = {
+				blog_tags:      [
+					{
+						some_tag: 'someTag'
+					},
+					{
+						another_tag: true
+					}
+				],
+				blog_poster:    {
+					poster_name: 'Sean',
+					poster_age:  25
+				},
+				blog_date:      'june 24, 1999',
+				blog_name:      'Some blog name',
+				blog_body:      'lorem ipsum would go here.',
+				blog_likes:     15,
+				blog_followers: ['Peter', 'John', 'Doe'],
+			};
+
+			const output = conventioner(input);
+
+			/** Asserts */
+			expect(output).to.be.an('object');
+			assert.deepEqual(output, expected);
+		});
 	});
 });
