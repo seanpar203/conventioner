@@ -148,7 +148,9 @@ const utility = {
 	underscoreSplit: str => str.split('_'),
 
 	/**
-	 * Recursively find the convention by looking through every object until it find one.
+	 * Recursively find the convention by looking through every object
+	 * until one is found. In the event that a convention isn't found
+	 * the method will just return a empty string.
 	 *
 	 * @param data - {Array, Object}
 	 * @return {String} - Convention.
