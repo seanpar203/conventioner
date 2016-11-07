@@ -157,7 +157,7 @@ const utility = {
 		let convention = '';
 
 		/**
-		 * Recursively searching property names until finding a convention.
+		 * Search all property names until finding a convention.
 		 *
 		 * @param data - {*}
 		 */
@@ -218,7 +218,7 @@ const utility = {
 	convertProps(data, test, converter) {
 
 		/**
-		 * Recursively calls itself changing data properties where test passes.
+		 * Search all objects changing data properties where test passes.
 		 *
 		 * @param data - {*}
 		 */
