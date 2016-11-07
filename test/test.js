@@ -283,5 +283,100 @@ describe('conventioner tests', () => {
 			expect(output).to.be.an('object');
 			assert.deepEqual(output, expected);
 		});
+
+		it('should convert all underscores property names to PascalCase.', () => {
+			const input = {
+				blog_tags:      [
+					{
+						some_tag: 'someTag'
+					},
+					{
+						another_tag: true
+					}
+				],
+				blog_poster:    {
+					poster_name: 'Sean',
+					poster_age:  25
+				},
+				blog_date:      'june 24, 1999',
+				blog_name:      'Some blog name',
+				blog_body:      'lorem ipsum would go here.',
+				blog_likes:     15,
+				blog_followers: ['Peter', 'John', 'Doe'],
+			};
+			const expected = {
+				BlogTags:      [
+					{
+						SomeTag: 'someTag'
+					},
+					{
+						AnotherTag: true
+					}
+				],
+				BlogPoster:    {
+					PosterName: 'Sean',
+					PosterAge:  25
+				},
+				BlogDate:      'june 24, 1999',
+				BlogName:      'Some blog name',
+				BlogBody:      'lorem ipsum would go here.',
+				BlogLikes:     15,
+				BlogFollowers: ['Peter', 'John', 'Doe'],
+			};
+
+			const output = conventioner(input, 'PC');
+
+			/** Asserts */
+			expect(output).to.be.an('object');
+			assert.deepEqual(output, expected);
+		});
+
+		it('should convert all PascalCase property names to underscores.', () => {
+			const input = {
+				BlogTags:      [
+					{
+						SomeTag: 'someTag'
+					},
+					{
+						AnotherTag: true
+					}
+				],
+				BlogPoster:    {
+					PosterName: 'Sean',
+					PosterAge:  25
+				},
+				BlogDate:      'june 24, 1999',
+				BlogName:      'Some blog name',
+				BlogBody:      'lorem ipsum would go here.',
+				BlogLikes:     15,
+				BlogFollowers: ['Peter', 'John', 'Doe'],
+			};
+
+			const expected = {
+				blog_tags:      [
+					{
+						some_tag: 'someTag'
+					},
+					{
+						another_tag: true
+					}
+				],
+				blog_poster:    {
+					poster_name: 'Sean',
+					poster_age:  25
+				},
+				blog_date:      'june 24, 1999',
+				blog_name:      'Some blog name',
+				blog_body:      'lorem ipsum would go here.',
+				blog_likes:     15,
+				blog_followers: ['Peter', 'John', 'Doe'],
+			};
+
+			const output = conventioner(input, '_');
+
+			/** Asserts */
+			expect(output).to.be.an('object');
+			assert.deepEqual(output, expected);
+		});
 	});
 });
