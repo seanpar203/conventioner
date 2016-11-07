@@ -11,9 +11,8 @@ or for yarn users:
 
 
 # Usage
-passing a **Single Level** object to the function `conventioner` will attempt to convert `underscore` and `PascalCase`
-to `camelCase` and `camelCase` to `underscore` by default. See [Selecting Conventions](#selecting-convention) to override
-the default behavior.
+passing a **Single Level or Multi-level** `Object` or `Array` to the `conventioner` function will attempt to convert `underscore` and `PascalCase`
+to `camelCase` and `camelCase` to `underscore` by default. See [Selecting Conventions](#selecting-convention) to override the default behavior.
 
 
 # Non Trivial Usage
@@ -54,6 +53,16 @@ state: {
         userEmail:    'some@gmail.com',
         userAddress:  '42 holley drive',
         userBirthday: 'may 3rd, 1991',
+        friends:[
+            {
+                firstName: 'Some',
+                lastName:  'amigo,
+            },
+            {
+                firstName: 'Another',
+                lastName:  'amigo,
+            }
+        ]
     };
 }
 
