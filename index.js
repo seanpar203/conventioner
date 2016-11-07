@@ -26,6 +26,7 @@ function toConvention(from, to) {
 
 	switch (convention !== null) {
 
+		// When to param is null.
 		case convention === '_' && to === null:
 			output = conventionize(data, tests.hasUnderscore, converter.underToCamel);
 			break;
@@ -38,6 +39,7 @@ function toConvention(from, to) {
 			output = conventionize(data, tests.isFirstCharUpper, converter.pascalToCamel);
 			break;
 
+		// When to param isn't null.
 		case convention === 'cC' && to === 'PC':
 			output = conventionize(data, tests.isFirstCharLower, converter.camelToPascal);
 			break;
@@ -50,6 +52,7 @@ function toConvention(from, to) {
 			output = conventionize(data, tests.isFirstCharUpper, converter.pascalToUnder);
 			break;
 
+		// If no conventions found.
 		default:
 			output = data;
 	}
@@ -153,6 +156,11 @@ const utility = {
 	findConvention(data) {
 		let convention = '';
 
+		/**
+		 * Recursively searching property names until finding a convention.
+		 *
+		 * @param data - {*}
+		 */
 		function recursiveFind(data) {
 
 			if (convention.length > 0) {
@@ -209,6 +217,11 @@ const utility = {
 	 */
 	convertProps(data, test, converter) {
 
+		/**
+		 * Recursively calls itself changing data properties where test passes.
+		 *
+		 * @param data - {*}
+		 */
 		function recursiveConverter(data) {
 
 			if (_isArray(data)) {
