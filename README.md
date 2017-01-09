@@ -39,7 +39,7 @@ conventioner(blog);
 # More Complex Examples
 
 This example shows a mock of communicating with a backend that uses underscore naming convention
-like `Python`(:heart_eyes:), `Ruby` and `PHP`(:poop:).
+like `Python`, `Ruby` and `PHP`.
 
 This makes keeping language naming conventions easy & allows you to focus on building your app.
 
