@@ -406,4 +406,4 @@ class Converters {
 }
 
 
-module.exports = conventioner;
+module.exports = Conventioner;
