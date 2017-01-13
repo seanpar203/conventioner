@@ -3,155 +3,132 @@
 const _isArray = require('lodash/fp/isArray');
 const _isObject = require('lodash/fp/isObject');
 
-/**
- * A Helper function for converting data from and to language conventions with ease.
- *
- * @param data - {Object} - Single level Object
- * @param to - {String} - Optional value to force specific convention.
- * @returns {Object} - Single level Object to language convention.
- */
-const conventioner = (data, to = null) => toConvention(fromConvention(data), to);
-
-
-/**
- * Decides what convention to change to.
- *
- * @param from - {Array} - results fromConvention method.
- * @param to - {String} - Optional value to force certain convention.
- * @returns {Object} - Value of to convention.
- */
-function toConvention(from, to) {
-	let [convention, data] = from;
-	let output;
-
-	switch (convention !== null) {
-
-		// When to param is null.
-		case convention === '_' && to === null:
-			output = conventionize(data, tests.hasUnderscore, converter.underToCamel);
-			break;
-
-		case convention === 'cC' && to === null:
-			output = conventionize(data, tests.hasUpperCase, converter.camelToUnder);
-			break;
-
-		case convention === 'PC' && to === null:
-			output = conventionize(data, tests.isFirstCharUpper, converter.pascalToCamel);
-			break;
-
-		// When to param isn't null.
-		case convention === 'cC' && to === 'PC':
-			output = conventionize(data, tests.isFirstCharLower, converter.camelToPascal);
-			break;
-
-		case convention === '_' && to === 'PC':
-			output = conventionize(data, tests.hasUnderscore, converter.underToPascal);
-			break;
-
-		case convention === 'PC' && to === '_':
-			output = conventionize(data, tests.isFirstCharUpper, converter.pascalToUnder);
-			break;
-
-		// If no conventions found.
-		default:
-			output = data;
-	}
-
-	return output;
-}
-
-/**
- * Finds convention by analyzing data props.
- *
- * @param data - object to find convention.
- * @returns {Array} - name of convention
- */
-const fromConvention = (data) => [utility.findConvention(data), data];
-
-/**
- * Generic method that converts object prop names.
- *
- * @param data - {Object} - data to change conventions.
- * @param test - {Function} - test case to check if matches convention.
- * @param converter - {Function} - method to convert prop name to desired.
- * @return {Object} - Value of converted conventions.
- */
-const conventionize = (data, test, converter) => utility.convertProps(data, test, converter);
 
 class Conventioner {
 
 	constructor() {
-		this.convention = '';
+		this._data = {};
+		this._convention = null;
 
 		// Create Helper classes.
-		this.tests = new Tests();
-		this.converters = new Converters();
+		this._tests = new Tests();
+		this._converters = new Converters();
+	}
+
+	// ============================================================
+	// Public Methods.
+	//=============================================================
+	to_(data) {
+		this._initialSteps(data);
+		return this._findAndConvertTo('_');
+	}
+
+	/**
+	 * Finds the convention and returns a string of convention.
+	 * @return {String} - Convention.
+	 */
+	findConvention() {
+		this._resetConvention();
+		this._recursiveFind(this._data);
+		return this._convention;
 	}
 
 	// ============================================================
 	// Private Methods.
 	//=============================================================
 
+	_initialSteps(data) {
+		this._data = data;
+		this._resetConvention();
+		this._recursiveFind(data);
+	}
+
+	_resetConvention() {
+		this._convention = null;
+	}
+
 	/**
-	 * Recursively find the convention by looking through every object
-	 * until one is found. In the event that a convention isn't found
-	 * the method will just return a empty string.
+	 * Decides what tests and convention to use for converting properties.
+	 * Then returns the converted data.
 	 *
-	 * @param data - {Array, Object}
-	 * @return {String} - Convention.
+	 * @param to - {String} - Optional value to force certain convention.
+	 * @returns {Object} - Value of to convention.
 	 */
-	_findConvention(data) {
-		let convention = '';
+	_findAndConvertTo(to) {
 
-		/**
-		 * Analyze all property names in attempts to find a language convention.
-		 *
-		 * @param data - {*}
-		 */
-		function recursiveFind(data) {
+		let test;
+		let converter;
+		const convention = this._convention;
 
-			if (convention.length > 0) {
-				return;
-			}
+		switch (true) {
 
-			else if (_isArray(data)) {
-				for (let i = 0; i < data.length; ++i) {
-					recursiveFind(data[i])
-				}
-			}
+			case convention === 'cC' && to === 'PC':
+				test = this._tests.isFirstCharLower;
+				converter = this._converters.camelToPascal;
+				break;
 
-			else if (_isObject(data)) {
-				let dataLength = Object.keys(data).length;
+			case convention === '_' && to === 'PC':
+				test = this._tests.hasUnderscore;
+				converter = this._converters.underToPascal;
+				break;
 
-				for (let i = 0; i < dataLength; i += 1) {
-					let key = Object.keys(data)[i];
-					let val = data[key];
+			case convention === 'PC' && to === '_':
+				test = this._tests.isFirstCharUpper;
+				converter = this._converters.pascalToUnder;
+				break;
 
-					switch (key !== null) {
+			// If no conventions found.
+			default:
+				return this._data;
+		}
 
-						case this.tests.hasUnderscore(key):
-							convention = '_';
-							break;
+		return this._convertProps(this._data, test, converter);
+	}
 
-						case this.tests.isFirstCharLower(key) && this.tests.hasUpperCase(key):
-							convention = 'cC';
-							break;
+	/**
+	 * Analyze all property names in attempts to find a language convention.
+	 *
+	 * @param data - {*}
+	 */
+	_recursiveFind(data) {
 
-						case this.tests.isFirstCharUpper(key):
-							convention = 'PC';
-							break
-					}
+		if (this._convention.length > 0) {
+			return;
+		}
 
-					if (_isObject(val) || _isArray(val)) {
-						recursiveFind(val);
-					}
-				}
+		else if (_isArray(data)) {
+			for (let i = 0; i < data.length; ++i) {
+				this._recursiveFind(data[i])
 			}
 		}
 
-		recursiveFind(data);
+		else if (_isObject(data)) {
+			let dataLength = Object.keys(data).length;
 
-		return convention.length > 0 ? convention : null;
+			for (let i = 0; i < dataLength; i += 1) {
+				let key = Object.keys(data)[i];
+				let val = data[key];
+
+				switch (key !== null) {
+
+					case this._tests.hasUnderscore(key):
+						this._convention = '_';
+						break;
+
+					case this._tests.isFirstCharLower(key) && this._tests.hasUpperCase(key):
+						this._convention = 'cC';
+						break;
+
+					case this._tests.isFirstCharUpper(key):
+						this._convention = 'PC';
+						break
+				}
+
+				if (_isObject(val) || _isArray(val)) {
+					this._recursiveFind(val);
+				}
+			}
+		}
 	}
 
 	/**
