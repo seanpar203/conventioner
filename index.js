@@ -8,7 +8,7 @@ class Conventioner {
 
 	constructor() {
 		this._data = {};
-		this._convention = null;
+		this._convention = '';
 
 		// Create Helper classes.
 		this._tests = new Tests();
@@ -44,7 +44,7 @@ class Conventioner {
 	}
 
 	_resetConvention() {
-		this._convention = null;
+		this._convention = '';
 	}
 
 	/**
@@ -274,7 +274,6 @@ class Utility {
  */
 
 class Tests {
-
 	/**
 	 * Checks If first character is lowercase.
 	 *
@@ -324,10 +323,10 @@ class Tests {
  *  Converter methods must manipulate parameter.
  */
 
-class Converters {
+class Converters extends Utility {
 
 	constructor() {
-		this.utility = new Utility();
+		super();
 	}
 
 	/**
@@ -343,7 +342,7 @@ class Converters {
 	 *   felgall
 	 */
 	underToCamel(str) {
-		return this.utility.underscoreSplit(str).map(this.utility.camelMap).join('');
+		return super.underscoreSplit(str).map(super.camelMap).join('');
 	}
 
 
@@ -354,7 +353,7 @@ class Converters {
 	 * @return {String} - Pascal convention string.
 	 */
 	underToPascal(str) {
-		return this.utility.underscoreSplit(str).map(this.utility.pascalMap).join('');
+		return super.underscoreSplit(str).map(super.pascalMap).join('');
 	}
 
 	/**
@@ -380,7 +379,7 @@ class Converters {
 	 * @return {String} - PascalCase string.
 	 */
 	camelToPascal(str) {
-		return this.utility.firstCharUpper(str);
+		return super.firstCharUpper(str);
 	}
 
 	/**
@@ -390,7 +389,7 @@ class Converters {
 	 * @return {String} - First character lowercase.
 	 */
 	pascalToCamel(str) {
-		return this.utility.firstCharLower(str);
+		return super.firstCharLower(str);
 
 	}
 
@@ -401,7 +400,7 @@ class Converters {
 	 * @return {String} - underscore string.
 	 */
 	pascalToUnder(str) {
-		return this.utility.upperCharsSplit(str).map(this.utility.underscoreMap).join('');
+		return super.upperCharsSplit(str).map(super.underscoreMap).join('');
 	}
 }
 
