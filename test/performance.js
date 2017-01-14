@@ -4,10 +4,11 @@
 'use strict';
 require('babel-polyfill');
 
-const conventioner = require('./../index');
+const Conventioner = require('./../index');
+
 
 const TEST_DATA = {
-	BlogTags: [
+	BlogTags:      [
 		{
 			SomeTag: 'someTag'
 		},
@@ -15,17 +16,18 @@ const TEST_DATA = {
 			AnotherTag: true
 		}
 	],
-	BlogPoster: {
+	BlogPoster:    {
 		PosterName: 'Sean',
-		PosterAge: 25
+		PosterAge:  25
 	},
-	BlogDate: 'june 24, 1999',
-	BlogName: 'Some blog name',
-	BlogBody: 'lorem ipsum would go here.',
-	BlogLikes: 15,
+	BlogDate:      'june 24, 1999',
+	BlogName:      'Some blog name',
+	BlogBody:      'lorem ipsum would go here.',
+	BlogLikes:     15,
 	BlogFollowers: ['Peter', 'John', 'Doe'],
 };
+const conv = new Conventioner();
 
 console.time('Using delete object');
-conventioner(TEST_DATA);
+console.log(conv.to_(TEST_DATA));
 console.timeEnd('Using delete object');
